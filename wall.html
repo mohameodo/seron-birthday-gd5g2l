@@ -3,60 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Public Wall | Birthday WishDrop</title>
+    <title>Public Birthday Wall</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-pink-50 font-nunito text-gray-800">
-
-    <div class="background-shapes">
-        <div class="shape shape1"></div>
-        <div class="shape shape2"></div>
-        <div class="shape shape3"></div>
-    </div>
-
-    <div class="container mx-auto p-4 md:p-8 z-10 relative">
-        <header class="text-center mb-8">
-            <a href="/" class="text-2xl md:text-3xl font-black text-pink-500 drop-shadow-sm mb-2 inline-block">Birthday WishDrop</a>
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-700">Public Countdown Wall</h1>
-            <p class="text-gray-500 mt-2">See all the magical birthdays people are waiting for!</p>
-        </header>
-
-        <div class="sticky top-4 bg-white/70 backdrop-blur-lg p-4 rounded-2xl shadow-md mb-8 z-20">
-            <div class="flex flex-col md:flex-row gap-4">
-                <div class="relative flex-grow">
-                    <i class="fa-solid fa-search absolute top-1/2 -translate-y-1/2 left-4 text-pink-300"></i>
-                    <input type="text" id="search-bar" placeholder="Search by name..." class="form-input w-full">
-                </div>
-                <div id="filter-tabs" class="flex items-center justify-center bg-pink-100/50 rounded-full p-1 space-x-1">
-                    <button class="filter-tab active" data-filter="upcoming">Upcoming</button>
-                    <button class="filter-tab" data-filter="today">Today</button>
-                    <button class="filter-tab" data-filter="all">All</button>
-                </div>
-            </div>
-        </div>
-
-        <main id="wall-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Skeleton Loader -->
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
-        </main>
-
-        <div id="no-results" class="hidden text-center py-16">
-            <i class="fa-solid fa-ghost text-6xl text-pink-300 mb-4"></i>
-            <p class="text-xl text-gray-500">No birthdays found. Why not <a href="/" class="text-pink-500 font-bold hover:underline">add one</a>?</p>
-        </div>
-    </div>
+<body class="bg-pink-50 font-poppins text-gray-700">
 
     <div id="toast-container"></div>
 
-    <script type="module" src="js/firebase-config.js"></script>
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-10">
+            <h1 class="text-5xl font-fredoka text-pink-500 mb-2">Birthday Wall</h1>
+            <p class="text-lg text-gray-500">See all the amazing birthdays people are celebrating!</p>
+            <a href="/" class="inline-block mt-4 bg-pink-500 text-white font-bold py-2 px-5 rounded-full hover:bg-pink-600 transition-transform hover:scale-105">+ Add Your Own</a>
+        </header>
+
+        <!-- Filters and Search -->
+        <div class="flex flex-col md:flex-row gap-4 justify-center mb-8">
+            <div class="relative w-full md:w-1/2 lg:w-1/3">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-search"></i></span>
+                <input type="text" id="search-input" placeholder="Search by name..." class="w-full pl-10 pr-4 py-3 bg-white border-2 border-pink-200 rounded-full focus:ring-pink-500 focus:border-pink-500 transition">
+            </div>
+            <div class="flex justify-center gap-2 bg-pink-100/80 p-1.5 rounded-full">
+                <button data-filter="upcoming" class="filter-btn active-filter">Upcoming</button>
+                <button data-filter="today" class="filter-btn">Today</button>
+                <button data-filter="all" class="filter-btn">All</button>
+            </div>
+        </div>
+
+        <!-- Birthday Grid -->
+        <main id="birthday-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Loader -->
+            <div id="loader" class="col-span-full text-center py-20">
+                <i class="fas fa-spinner fa-spin text-pink-500 text-5xl"></i>
+                <p class="mt-4 text-lg text-gray-500">Loading celebrations...</p>
+            </div>
+        </main>
+        <p id="no-results" class="hidden col-span-full text-center py-20 text-xl text-gray-500">No birthdays found. Why not add one?</p>
+
+    </div>
+
+    <a href="https://seron.dev" target="_blank" class="fixed bottom-4 right-4 bg-white/80 backdrop-blur-sm text-gray-600 text-xs font-semibold px-3 py-1.5 rounded-full shadow-md hover:bg-white transition-all duration-300">
+        Made by Seron
+    </a>
+
     <script type="module" src="js/wall.js"></script>
 </body>
 </html>
