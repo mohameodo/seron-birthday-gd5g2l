@@ -1,127 +1,134 @@
-/* Custom global styles and animations */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
-/* Toast Notification */
-.toast {
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-    color: white;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transform: translateX(120%);
-    transition: transform 0.5s ease-in-out;
-    opacity: 0;
+.glass-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(236, 72, 153, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.toast.show {
-    transform: translateX(0);
-    opacity: 1;
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(236, 72, 153, 0.2);
 }
 
-.toast.success { background-color: #28a745; }
-.toast.error { background-color: #dc3545; }
-.toast.info { background-color: #17a2b8; }
+.form-input {
+    @apply w-full bg-white/50 border-2 border-pink-200 rounded-full py-3 px-6 pl-12 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-300;
+}
 
-/* Countdown Page Timer Box */
+.submit-button {
+    @apply w-full bg-pink-500 text-white font-bold py-4 px-6 rounded-full text-lg shadow-lg shadow-pink-500/30 transform hover:scale-105 hover:bg-pink-600 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-pink-300;
+}
+
+.share-button, .back-button {
+    @apply bg-white/80 text-pink-500 font-bold py-3 px-6 rounded-full shadow-md transform hover:scale-105 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-pink-300;
+}
+
+.back-button {
+    @apply text-gray-600 bg-gray-100/80 focus:ring-gray-300;
+}
+
+.filter-tab {
+    @apply px-4 py-2 rounded-full font-semibold text-gray-600 transition-all duration-300;
+}
+
+.filter-tab.active {
+    @apply bg-white text-pink-500 shadow-md;
+}
+
+/* Countdown Timer Styling */
 .timer-box {
-    background: linear-gradient(145deg, #f9fafb, #e5e7eb);
-    border-radius: 1.5rem;
-    padding: 1.5rem 1rem;
-    box-shadow: 5px 5px 15px #d1d5db, -5px -5px 15px #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    @apply bg-pink-100/70 p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center shadow-inner;
 }
-
 .timer-digit {
-    font-size: 3rem; /* 48px */
-    font-weight: 900;
-    color: #374151; /* gray-700 */
-    line-height: 1;
+    @apply text-4xl md:text-6xl font-black text-pink-500;
 }
-
 .timer-label {
-    font-size: 0.875rem; /* 14px */
-    font-weight: 600;
-    color: #6b7280; /* gray-500 */
-    margin-top: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    @apply text-sm md:text-base text-pink-400 font-bold mt-1;
 }
 
-@media (min-width: 640px) {
-    .timer-digit { font-size: 4.5rem; /* 72px */ }
-    .timer-label { font-size: 1rem; /* 16px */ }
+/* Toast Notifications */
+#toast-container {
+    @apply fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3;
 }
 
-/* Action Button on Countdown Page */
-.action-btn {
-    @apply text-white font-bold py-3 px-6 rounded-lg transform transition-transform duration-300 focus:outline-none focus:ring-4 focus:ring-opacity-50 flex items-center justify-center w-full sm:w-auto;
+.toast {
+    @apply flex items-center gap-4 py-3 px-5 rounded-xl shadow-lg text-white font-semibold;
+    animation: slide-in 0.5s ease-out, fade-out 0.5s ease-in 2.5s forwards;
 }
 
-/* Wall Page Filter Buttons */
-.filter-btn {
-    @apply px-4 py-2 text-sm font-semibold text-gray-600 rounded-full transition-colors duration-300;
-}
-.active-filter {
-    @apply bg-pink-500 text-white shadow-md;
+.toast.success { @apply bg-green-500; }
+.toast.error { @apply bg-red-500; }
+.toast.info { @apply bg-blue-500; }
+
+@keyframes slide-in {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
 
-/* Friend Card Sparkles */
-.friend-card::after {
-    content: '\f065'; /* Font Awesome sparkle icon */
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
+@keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; transform: translateX(100%); }
+}
+
+/* Background Shapes */
+.background-shapes .shape {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    color: #f59e0b; /* amber-500 */
-    font-size: 1.25rem;
-    animation: sparkle 1.5s infinite;
+    border-radius: 50%;
+    opacity: 0.1;
+    animation: float 20s infinite ease-in-out;
+}
+.shape1 { width: 200px; height: 200px; background: #f9a8d4; top: 10%; left: 5%; animation-duration: 22s; }
+.shape2 { width: 100px; height: 100px; background: #a5b4fc; bottom: 15%; right: 10%; animation-duration: 18s; }
+.shape3 { width: 150px; height: 150px; background: #fcd34d; top: 40%; right: 20%; animation-duration: 25s; }
+
+@keyframes float {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(180deg); }
+    100% { transform: translateY(0px) rotate(360deg); }
 }
 
-@keyframes sparkle {
-    0%, 100% { transform: scale(1); opacity: 0.7; }
-    50% { transform: scale(1.3); opacity: 1; }
-}
-
-/* Skeleton Loader for Wall */
+/* Skeleton Loader */
 .skeleton-card {
-    background-color: #e5e7eb;
-    border-radius: 1rem;
-    height: 180px;
+    background-color: #fff;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    height: 200px;
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: .5;
-  }
+    50% { opacity: .5; }
 }
 
-/* Reduced motion query */
-@media (prefers-reduced-motion: reduce) {
-  .balloon, .confetti {
-    display: none;
-  }
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+/* Sparkle Effect for Friend's Birthday */
+.sparkle {
+    position: relative;
 }
 
-/* Animations: Balloons & Confetti */
+.sparkle::after {
+    content: '✨';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 1.5rem;
+    animation: sparkle-anim 1.5s infinite ease-in-out;
+}
+
+@keyframes sparkle-anim {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+}
+
+/* Balloon Animation */
 .balloon {
     width: 70px;
     height: 90px;
@@ -132,32 +139,22 @@ body {
     animation: rise 10s infinite ease-in;
 }
 
+.balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 20px;
+    background: rgba(0,0,0,0.2);
+}
+
 @keyframes rise {
     0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.7;
+        transform: translateY(0) translateX(0);
     }
     100% {
-        transform: translateY(-120vh) rotate(720deg);
-        opacity: 0;
-    }
-}
-
-.confetti {
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    opacity: 0;
-    animation: fall 5s infinite linear;
-}
-
-@keyframes fall {
-    0% {
-        transform: translateY(-10vh) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(110vh) rotate(1080deg);
-        opacity: 0;
+        transform: translateY(-120vh) translateX(100px);
     }
 }
