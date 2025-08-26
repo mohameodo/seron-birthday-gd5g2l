@@ -1,23 +1,12 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Anyone can read birthday data to see the public wall and countdowns.
+    // Only authenticated users (via anonymous auth) can create new birthdays.
+    // No one can update or delete birthdays directly from the client.
     match /birthdays/{birthdayId} {
-      // Anyone can read the list of birthdays.
       allow read: if true;
-
-      // Only authenticated users can create a new birthday.
-      // We also validate the data being written.
-      allow create: if request.auth != null
-                    && request.resource.data.name is string
-                    && request.resource.data.name.size() > 0
-                    && request.resource.data.name.size() <= 32
-                    && request.resource.data.date is string
-                    && request.resource.data.date.matches('^\\d{4}-\\d{2}-\\d{2}$')
-                    && request.resource.data.isForFriend is bool
-                    && request.resource.data.createdBy == request.auth.uid
-                    && (!('note' in request.resource.data) || (request.resource.data.note is string && request.resource.data.note.size() <= 120));
-      
-      // Nobody can update or delete for this simple app.
+      allow create: if request.auth != null;
       allow update, delete: if false;
     }
   }
