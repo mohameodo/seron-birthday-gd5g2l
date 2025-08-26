@@ -3,68 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Countdown</title>
+    <title>Birthday Countdown Creator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-yellow-50 font-sans text-gray-800">
-    <div id="toast-container"></div>
+<body class="bg-gray-50 font-sans flex items-center justify-center min-h-screen">
 
-    <div class="min-h-screen flex flex-col items-center justify-center p-4">
-        <header class="text-center mb-8 animate-fade-in-down">
-            <h1 class="text-4xl md:text-6xl font-bold text-pink-500 tracking-tight">Birthday Countdown</h1>
-            <p class="text-gray-600 mt-2 text-lg">Create a special countdown for yourself or a friend!</p>
-        </header>
+    <div id="toast-container" class="fixed top-5 right-5 z-50"></div>
 
-        <main class="w-full max-w-lg">
-            <form id="birthday-form" class="bg-white p-8 rounded-2xl shadow-lg space-y-6 animate-fade-in-up">
-                <div>
-                    <label for="name" class="block text-sm font-semibold text-gray-700 mb-1">Name</label>
-                    <input type="text" id="name" name="name" required maxlength="32" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 transition" placeholder="e.g., Jane Doe">
-                </div>
-
-                <div>
-                    <label for="date" class="block text-sm font-semibold text-gray-700 mb-1">Birthday Date</label>
-                    <input type="date" id="date" name="date" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 transition">
-                </div>
-
-                <div>
-                    <label for="note" class="block text-sm font-semibold text-gray-700 mb-1">Optional Note</label>
-                    <textarea id="note" name="note" rows="3" maxlength="120" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 transition" placeholder="Add a sweet message..."></textarea>
-                </div>
-
-                <fieldset>
-                    <legend class="block text-sm font-semibold text-gray-700 mb-2">Whose birthday is it?</legend>
-                    <div class="flex items-center space-x-6">
-                        <div class="flex items-center">
-                            <input type="radio" id="isForSelf" name="isForFriend" value="false" checked class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300">
-                            <label for="isForSelf" class="ml-2 block text-sm text-gray-900">It's my birthday!</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="isForFriend" name="isForFriend" value="true" class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300">
-                            <label for="isForFriend" class="ml-2 block text-sm text-gray-900">It's for a friend!</label>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <button type="submit" class="w-full bg-pink-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-transform transform hover:scale-105">
-                    Start the Countdown!
-                </button>
-            </form>
-             <div class="text-center mt-6">
-                <a href="wall.html" class="text-pink-500 hover:text-pink-700 font-semibold transition">View the Public Wall <i class="fas fa-arrow-right ml-1"></i></a>
+    <div class="w-full max-w-lg p-8 space-y-8 bg-white rounded-2xl shadow-lg m-4">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-gray-800">Create a Birthday Countdown</h1>
+            <p class="mt-2 text-gray-500">Let the celebration begin!</p>
+        </div>
+        <form id="birthday-form" class="mt-8 space-y-6">
+            <div>
+                <label for="name" class="text-sm font-semibold text-gray-700">Name</label>
+                <input id="name" name="name" type="text" required maxlength="32" class="mt-1 block w-full px-4 py-3 bg-gray-100 border border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-transparent transition" placeholder="e.g., Jane Doe">
             </div>
-        </main>
+
+            <div>
+                <label for="birthday" class="text-sm font-semibold text-gray-700">Birthday Date</label>
+                <input id="birthday" name="birthday" type="date" required class="mt-1 block w-full px-4 py-3 bg-gray-100 border border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-transparent transition">
+            </div>
+
+            <div>
+                <label for="note" class="text-sm font-semibold text-gray-700">Optional Note</label>
+                <textarea id="note" name="note" rows="3" maxlength="120" class="mt-1 block w-full px-4 py-3 bg-gray-100 border border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-transparent transition" placeholder="Add a fun message!"></textarea>
+            </div>
+
+            <fieldset>
+                <legend class="text-sm font-semibold text-gray-700">Whose birthday is it?</legend>
+                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label class="relative flex items-center p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-blue-50 transition border-2 border-transparent has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50">
+                        <input type="radio" name="type" value="self" class="sr-only" checked>
+                        <i class="fas fa-birthday-cake text-blue-500 mr-3"></i>
+                        <span class="font-medium text-gray-800">It's my birthday!</span>
+                    </label>
+                    <label class="relative flex items-center p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-blue-50 transition border-2 border-transparent has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50">
+                        <input type="radio" name="type" value="friend" class="sr-only">
+                        <i class="fas fa-gift text-pink-500 mr-3"></i>
+                        <span class="font-medium text-gray-800">For a friend</span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-transform transform hover:scale-105">
+                    Create Countdown
+                </button>
+            </div>
+        </form>
+         <div class="text-center mt-4">
+            <a href="wall.html" class="font-medium text-blue-600 hover:text-blue-500">
+                View the Public Wall <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
     </div>
 
-    <a href="https://seron.dev" target="_blank" class="made-by-seron">
+    <a href="https://seron.dev" target="_blank" class="fixed bottom-4 right-4 bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg hover:bg-gray-800 transition-colors z-50">
         Made by Seron
     </a>
 
+    <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
