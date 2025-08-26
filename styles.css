@@ -1,160 +1,91 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
-    font-family: 'Nunito', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.glass-card {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(236, 72, 153, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.font-fredoka {
+    font-family: 'Fredoka One', cursive;
 }
 
-.glass-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px 0 rgba(236, 72, 153, 0.2);
+.font-poppins {
+    font-family: 'Poppins', sans-serif;
 }
 
-.form-input {
-    @apply w-full bg-white/50 border-2 border-pink-200 rounded-full py-3 px-6 pl-12 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-300;
+/* Custom Radio Button */
+.form-radio {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #f9a8d4; /* pink-300 */
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.submit-button {
-    @apply w-full bg-pink-500 text-white font-bold py-4 px-6 rounded-full text-lg shadow-lg shadow-pink-500/30 transform hover:scale-105 hover:bg-pink-600 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-pink-300;
-}
-
-.share-button, .back-button {
-    @apply bg-white/80 text-pink-500 font-bold py-3 px-6 rounded-full shadow-md transform hover:scale-105 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-pink-300;
-}
-
-.back-button {
-    @apply text-gray-600 bg-gray-100/80 focus:ring-gray-300;
-}
-
-.filter-tab {
-    @apply px-4 py-2 rounded-full font-semibold text-gray-600 transition-all duration-300;
-}
-
-.filter-tab.active {
-    @apply bg-white text-pink-500 shadow-md;
-}
-
-/* Countdown Timer Styling */
-.timer-box {
-    @apply bg-pink-100/70 p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center shadow-inner;
-}
-.timer-digit {
-    @apply text-4xl md:text-6xl font-black text-pink-500;
-}
-.timer-label {
-    @apply text-sm md:text-base text-pink-400 font-bold mt-1;
+.form-radio:checked {
+    background-color: #ec4899; /* pink-500 */
+    border-color: #ec4899; /* pink-500 */
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 16 16" fill="white" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="3"/></svg>');
 }
 
 /* Toast Notifications */
 #toast-container {
-    @apply fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3;
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .toast {
-    @apply flex items-center gap-4 py-3 px-5 rounded-xl shadow-lg text-white font-semibold;
-    animation: slide-in 0.5s ease-out, fade-out 0.5s ease-in 2.5s forwards;
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateX(120%);
+    transition: transform 0.4s ease-in-out;
 }
 
-.toast.success { @apply bg-green-500; }
-.toast.error { @apply bg-red-500; }
-.toast.info { @apply bg-blue-500; }
-
-@keyframes slide-in {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+.toast.show {
+    transform: translateX(0);
 }
 
-@keyframes fade-out {
-    from { opacity: 1; }
-    to { opacity: 0; transform: translateX(100%); }
+.toast-success { background-color: #22c55e; } /* green-500 */
+.toast-error { background-color: #ef4444; } /* red-500 */
+.toast-info { background-color: #3b82f6; } /* blue-500 */
+
+/* Confetti Canvas */
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
 }
 
-/* Background Shapes */
-.background-shapes .shape {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.1;
-    animation: float 20s infinite ease-in-out;
-}
-.shape1 { width: 200px; height: 200px; background: #f9a8d4; top: 10%; left: 5%; animation-duration: 22s; }
-.shape2 { width: 100px; height: 100px; background: #a5b4fc; bottom: 15%; right: 10%; animation-duration: 18s; }
-.shape3 { width: 150px; height: 150px; background: #fcd34d; top: 40%; right: 20%; animation-duration: 25s; }
-
-@keyframes float {
-    0% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-30px) rotate(180deg); }
-    100% { transform: translateY(0px) rotate(360deg); }
+/* Wall Page Styles */
+.filter-btn {
+    @apply px-5 py-2 rounded-full font-semibold text-gray-600 transition-all duration-300;
 }
 
-/* Skeleton Loader */
-.skeleton-card {
-    background-color: #fff;
-    border-radius: 1.5rem;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    height: 200px;
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.active-filter {
+    @apply bg-white text-pink-500 shadow-md;
 }
 
-@keyframes pulse {
-    50% { opacity: .5; }
-}
-
-/* Sparkle Effect for Friend's Birthday */
-.sparkle {
-    position: relative;
-}
-
-.sparkle::after {
-    content: '✨';
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    font-size: 1.5rem;
-    animation: sparkle-anim 1.5s infinite ease-in-out;
-}
-
-@keyframes sparkle-anim {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.5); opacity: 0.5; }
-}
-
-/* Balloon Animation */
-.balloon {
-    width: 70px;
-    height: 90px;
-    border-radius: 50%;
-    position: absolute;
-    bottom: -100px;
-    opacity: 0.7;
-    animation: rise 10s infinite ease-in;
-}
-
-.balloon::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 20px;
-    background: rgba(0,0,0,0.2);
-}
-
-@keyframes rise {
-    0% {
-        transform: translateY(0) translateX(0);
-    }
-    100% {
-        transform: translateY(-120vh) translateX(100px);
-    }
+/* Countdown Page Styles */
+.share-btn {
+    @apply px-4 py-2 rounded-full font-semibold transition-all duration-300 flex items-center justify-center shadow-sm transform hover:scale-105;
 }
