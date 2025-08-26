@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Birthday Wall</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-yellow-50 font-sans text-gray-800">
+    <div id="toast-container"></div>
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8 animate-fade-in-down">
+            <h1 class="text-4xl md:text-6xl font-bold text-pink-500 tracking-tight">Public Wall</h1>
+            <p class="text-gray-600 mt-2 text-lg">See all the exciting birthdays coming up!</p>
+            <a href="/" class="mt-4 inline-block text-pink-500 hover:text-pink-700 font-semibold transition"><i class="fas fa-plus-circle mr-1"></i> Add Your Own</a>
+        </header>
+
+        <div class="sticky top-0 bg-yellow-50/80 backdrop-blur-sm py-4 z-10 mb-8">
+            <div class="flex flex-col md:flex-row gap-4 items-center justify-center max-w-4xl mx-auto">
+                <div class="relative w-full md:w-1/2">
+                    <input type="search" id="search-bar" placeholder="Search by name..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-pink-500 focus:border-pink-500 transition">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="flex space-x-2 bg-pink-100 p-1 rounded-full">
+                    <button data-filter="upcoming" class="filter-btn active-filter">Upcoming</button>
+                    <button data-filter="today" class="filter-btn">Today</button>
+                    <button data-filter="all" class="filter-btn">All</button>
+                </div>
+            </div>
+        </div>
+
+        <main id="birthday-wall" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-in-up">
+            <!-- Birthday cards will be injected here -->
+        </main>
+        <div id="loading-spinner" class="text-center py-10 text-pink-500 text-2xl hidden">
+             <i class="fas fa-spinner fa-spin"></i> Loading...
+        </div>
+    </div>
+
+    <a href="https://seron.dev" target="_blank" class="made-by-seron">
+        Made by Seron
+    </a>
+
+    <script src="js/wall.js"></script>
+</body>
+</html>
