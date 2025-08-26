@@ -1,0 +1,152 @@
+/* Custom Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+#toast-container {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.toast {
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slide-in 0.3s ease-out, fade-out 0.3s ease-in 2.7s forwards;
+}
+
+.toast.success { background-color: #28a745; }
+.toast.error { background-color: #dc3545; }
+
+.made-by-seron {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: #ff69b4; /* Pink */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+.made-by-seron:hover {
+    transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes slide-in {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes fade-in-down {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-down { animation: fade-in-down 0.6s ease-out forwards; }
+.animate-fade-in-up { animation: fade-in-up 0.6s ease-out 0.2s forwards; opacity: 0; }
+
+/* Countdown Text Animation */
+.countdown-digit {
+    animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+@keyframes pop-in {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Animation Container for Balloons and Confetti */
+#animation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.balloon {
+    position: absolute;
+    bottom: -150px;
+    width: 100px;
+    height: 120px;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+    border-radius: 50%;
+    animation: rise 10s infinite ease-in;
+}
+
+@keyframes rise {
+    0% { bottom: -150px; transform: translateX(0); }
+    100% { bottom: 110vh; transform: translateX(var(--sway)); }
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+    animation: fall 3s linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-10vh) rotateZ(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotateZ(720deg); opacity: 0; }
+}
+
+.sparkle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    animation: sparkle-anim 1s infinite;
+    opacity: 0;
+}
+
+@keyframes sparkle-anim {
+    0% { transform: scale(0); opacity: 0.5; }
+    50% { transform: scale(1.5); opacity: 1; }
+    100% { transform: scale(0); opacity: 0.5; }
+}
+
+/* Wall Styles */
+.filter-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: transparent;
+    border-radius: 9999px;
+    font-weight: 600;
+    color: #ec4899; /* pink-500 */
+    transition: all 0.2s ease-in-out;
+}
+
+.filter-btn.active-filter {
+    background-color: #ec4899;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
