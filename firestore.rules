@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Birthdays can be read by anyone.
+    match /birthdays/{birthdayId} {
+      allow read: if true;
+
+      // Only authenticated users can create birthdays.
+      // They must be the owner of the document they create.
+      // The document must conform to the expected data structure.
+      allow create: if request.auth != null
+                    && request.resource.data.createdBy == request.auth.uid
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() <= 32
+                    && request.resource.data.date is string
+                    && request.resource.data.date.matches('^[0-1][0-9]-[0-3][0-9]$')
+                    && request.resource.data.note is string
+                    && request.resource.data.note.size() <= 120
+                    && request.resource.data.isForFriend is bool
+                    && request.resource.data.timezone is string
+                    && request.resource.data.nextOccurrence is timestamp
+                    && request.resource.data.createdAt == request.time;
+
+      // Nobody can update or delete birthdays directly.
+      // This would be handled by a Cloud Function in a full implementation.
+      allow update, delete: if false;
+    }
+  }
+}
