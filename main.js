@@ -5,42 +5,24 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         const name = document.getElementById('name').value;
-        const date = document.getElementById('date').value;
+        const birthday = document.getElementById('birthday').value;
         const note = document.getElementById('note').value;
-        const isForFriend = document.querySelector('input[name="isForFriend"]:checked').value;
+        const type = document.querySelector('input[name="type"]:checked').value;
 
-        if (!name || !date) {
-            showToast('Please fill in the name and date!', 'error');
+        if (!name || !birthday) {
+            showToast('Please fill in both name and birthday!', 'error');
             return;
         }
 
-        const today = new Date().toISOString().split('T')[0];
-        if (date > today) {
-             showToast('Birthday date cannot be in the future.', 'error');
-             return;
-        }
+        const isForFriend = type === 'friend';
 
-        // In a real app, this would be sent to a backend.
-        // Here, we'll pass it via URL parameters.
         const params = new URLSearchParams({
-            name: encodeURIComponent(name),
-            date: date,
-            note: encodeURIComponent(note),
-            isForFriend: isForFriend
+            name: name,
+            date: birthday,
+            note: note,
+            friend: isForFriend
         });
 
-        window.location.href = `birthday.html?${params.toString()}`;
+        window.location.href = `countdown.html?${params.toString()}`;
     });
 });
-
-function showToast(message, type = 'success') {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-    container.appendChild(toast);
-
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
-}
