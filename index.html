@@ -3,66 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday WishDrop ✨</title>
+    <title>Birthday Countdown Creator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-pink-50 font-nunito text-gray-800 flex items-center justify-center min-h-screen p-4 overflow-hidden">
-
-    <div class="background-shapes">
-        <div class="shape shape1"></div>
-        <div class="shape shape2"></div>
-        <div class="shape shape3"></div>
-    </div>
-
-    <main id="app-container" class="w-full max-w-md mx-auto z-10">
-        <div class="glass-card p-8 text-center">
-            <h1 class="text-4xl md:text-5xl font-black text-pink-500 drop-shadow-sm mb-2">Birthday WishDrop</h1>
-            <p class="text-gray-500 mb-8">Create a magical countdown for a special day!</p>
-
-            <form id="birthday-form" class="space-y-6">
-                <div class="relative">
-                    <i class="fa-solid fa-user absolute top-1/2 -translate-y-1/2 left-4 text-pink-300"></i>
-                    <input type="text" id="name" name="name" placeholder="Whose birthday is it?" class="form-input" required maxlength="32">
-                </div>
-                <div class="relative">
-                    <i class="fa-solid fa-cake-candles absolute top-1/2 -translate-y-1/2 left-4 text-pink-300"></i>
-                    <input type="date" id="date" name="date" class="form-input" required>
-                </div>
-                <div class="relative">
-                    <i class="fa-solid fa-pen-fancy absolute top-1/2 -translate-y-1/2 left-4 text-pink-300"></i>
-                    <textarea id="note" name="note" placeholder="Add a sweet note (optional)" class="form-input h-24" maxlength="120"></textarea>
-                </div>
-                
-                <div class="flex items-center justify-center space-x-4 bg-pink-100/50 p-3 rounded-full">
-                    <label for="isForFriend" class="text-gray-600 font-bold">For a friend?</label>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="isForFriend" name="isForFriend" class="sr-only peer">
-                        <div class="w-14 h-8 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-pink-400"></div>
-                    </label>
-                </div>
-
-                <button type="submit" id="submit-btn" class="submit-button">
-                    <span class="button-text">Create Countdown</span>
-                    <span class="button-loader hidden"><i class="fas fa-spinner fa-spin"></i></span>
-                </button>
-            </form>
-            
-            <div class="mt-8">
-                <a href="wall.html" class="text-pink-500 hover:text-pink-600 font-bold transition-colors duration-300 group">
-                    View the Public Wall <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
-                </a>
-            </div>
-        </div>
-    </main>
+<body class="bg-pink-50 flex items-center justify-center min-h-screen font-poppins p-4">
 
     <div id="toast-container"></div>
 
-    <script type="module" src="js/firebase-config.js"></script>
+    <main class="w-full max-w-lg">
+        <div class="bg-white/70 backdrop-blur-xl border border-pink-200 rounded-3xl shadow-lg p-8 text-center">
+            <h1 class="text-4xl font-fredoka text-pink-500 mb-2">Create a Birthday Countdown!</h1>
+            <p class="text-gray-500 mb-8">Fill in the details to start the celebration.</p>
+
+            <form id="birthday-form" class="space-y-6">
+                <div>
+                    <label for="name" class="sr-only">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter a Name" class="w-full p-4 bg-pink-100/50 border-2 border-pink-200 rounded-xl focus:ring-pink-500 focus:border-pink-500 transition duration-300 placeholder-gray-400" required maxlength="32">
+                </div>
+                <div>
+                    <label for="date" class="sr-only">Birthday Date</label>
+                    <input type="date" id="date" name="date" class="w-full p-4 bg-pink-100/50 border-2 border-pink-200 rounded-xl focus:ring-pink-500 focus:border-pink-500 transition duration-300 text-gray-500" required>
+                </div>
+                <div>
+                    <label for="note" class="sr-only">Optional Note</label>
+                    <textarea id="note" name="note" placeholder="Add a special note (optional)" class="w-full p-4 bg-pink-100/50 border-2 border-pink-200 rounded-xl focus:ring-pink-500 focus:border-pink-500 transition duration-300 placeholder-gray-400" rows="3" maxlength="120"></textarea>
+                </div>
+                <div class="flex items-center justify-center gap-8 text-gray-600">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="type" value="own" class="form-radio text-pink-500 focus:ring-pink-500" checked>
+                        It's my birthday! 🎉
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="type" value="friend" class="form-radio text-pink-500 focus:ring-pink-500">
+                        It's for a friend! ✨
+                    </label>
+                </div>
+                <button type="submit" id="submit-btn" class="w-full bg-pink-500 text-white font-bold py-4 px-6 rounded-xl hover:bg-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-300 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    <span id="btn-text">Start Countdown</span>
+                    <span id="btn-loader" class="hidden">Creating... <i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+            </form>
+            <a href="wall.html" class="inline-block mt-6 text-pink-500 hover:text-pink-700 font-semibold transition-colors">View the Public Birthday Wall <i class="fas fa-arrow-right ml-1"></i></a>
+        </div>
+    </main>
+
+    <a href="https://seron.dev" target="_blank" class="fixed bottom-4 right-4 bg-white/80 backdrop-blur-sm text-gray-600 text-xs font-semibold px-3 py-1.5 rounded-full shadow-md hover:bg-white transition-all duration-300">
+        Made by Seron
+    </a>
+
     <script type="module" src="js/main.js"></script>
 </body>
 </html>
