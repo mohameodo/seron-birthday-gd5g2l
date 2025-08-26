@@ -1,118 +1,128 @@
+import { db } from './firebase-config.js';
+import { collection, query, onSnapshot, orderBy, where, Timestamp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js';
+
+const wallContainer = document.getElementById('wall-container');
+const searchBar = document.getElementById('search-bar');
+const filterTabs = document.getElementById('filter-tabs');
+const noResults = document.getElementById('no-results');
+let countdownIntervals = {};
+let allBirthdays = [];
+let currentFilter = 'upcoming';
+let searchQuery = '';
+
 document.addEventListener('DOMContentLoaded', () => {
-    const grid = document.getElementById('birthdays-grid');
-    const noResults = document.getElementById('no-results');
-    const searchBar = document.getElementById('search-bar');
-    const filterBtns = document.querySelectorAll('.filter-btn');
+    fetchAndRenderBirthdays();
 
-    let allBirthdays = [];
-    let currentFilter = 'upcoming';
-
-    const fetchBirthdays = async () => {
-        try {
-            const snapshot = await db.collection('birthdays').orderBy('nextOccurrence', 'asc').get();
-            if (snapshot.empty) {
-                grid.innerHTML = '';
-                noResults.classList.remove('hidden');
-                return;
-            }
-            allBirthdays = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            filterAndRenderBirthdays();
-        } catch (error) {
-            console.error("Error fetching birthdays: ", error);
-            showToast('Could not load birthdays.', 'error');
-            grid.innerHTML = '<p class="text-center text-red-500 col-span-full">Failed to load data.</p>';
-        }
-    };
-
-    const renderBirthdays = (birthdaysToRender) => {
-        grid.innerHTML = ''; // Clear skeleton or old content
-        if (birthdaysToRender.length === 0) {
-            grid.innerHTML = `<p class="text-center text-gray-500 col-span-full mt-8">No birthdays match your criteria.</p>`;
-            return;
-        }
-
-        birthdaysToRender.forEach(bday => {
-            const card = document.createElement('a');
-            card.href = `countdown.html?id=${bday.id}`;
-            card.className = `relative bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transform transition-all duration-300 block`;
-            if (bday.isForFriend) {
-                card.classList.add('friend-card');
-            }
-
-            const noteHTML = bday.note ? `<p class="text-gray-500 mt-2 italic truncate">"${bday.note}"</p>` : '<p class="text-gray-400 mt-2 italic">No note.</p>';
-
-            card.innerHTML = `
-                <h3 class="text-2xl font-bold text-gray-800 truncate">${bday.name}</h3>
-                ${noteHTML}
-                <div class="mt-4 pt-4 border-t border-gray-200">
-                    <div data-countdown="${bday.nextOccurrence.toDate()}" class="text-lg font-semibold text-pink-600">Loading...</div>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
-        startLiveCounters();
-    };
-    
-    const filterAndRenderBirthdays = () => {
-        const searchTerm = searchBar.value.toLowerCase();
-        let filtered = [...allBirthdays];
-
-        // Filter by tab
-        const now = new Date();
-        const todayStart = new Date(now.setHours(0, 0, 0, 0));
-        const todayEnd = new Date(now.setHours(23, 59, 59, 999));
-
-        if (currentFilter === 'upcoming') {
-            filtered = filtered.filter(b => b.nextOccurrence.toDate() >= todayEnd);
-        } else if (currentFilter === 'today') {
-            filtered = filtered.filter(b => {
-                const nextOcc = b.nextOccurrence.toDate();
-                return nextOcc >= todayStart && nextOcc <= todayEnd;
-            });
-        }
-
-        // Filter by search term
-        if (searchTerm) {
-            filtered = filtered.filter(b => b.name.toLowerCase().includes(searchTerm));
-        }
-
-        renderBirthdays(filtered);
-    };
-
-    const startLiveCounters = () => {
-        const countdownElements = document.querySelectorAll('[data-countdown]');
-        countdownElements.forEach(el => {
-            const targetDate = new Date(el.dataset.countdown);
-            const update = () => {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                if (distance < 0) {
-                    el.innerHTML = `Birthday has passed!`;
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                
-                el.innerHTML = `${days}d ${hours}h ${minutes}m`;
-            };
-            update();
-            setInterval(update, 60000); // Update every minute
-        });
-    };
-
-    searchBar.addEventListener('input', filterAndRenderBirthdays);
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active-filter'));
-            btn.classList.add('active-filter');
-            currentFilter = btn.dataset.filter;
-            filterAndRenderBirthdays();
-        });
+    searchBar.addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase();
+        renderFilteredBirthdays();
     });
 
-    fetchBirthdays();
+    filterTabs.addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-tab')) {
+            filterTabs.querySelector('.active').classList.remove('active');
+            e.target.classList.add('active');
+            currentFilter = e.target.dataset.filter;
+            renderFilteredBirthdays();
+        }
+    });
 });
+
+function fetchAndRenderBirthdays() {
+    const q = query(collection(db, 'birthdays'), orderBy('createdAt', 'desc'));
+
+    onSnapshot(q, (snapshot) => {
+        wallContainer.innerHTML = ''; // Clear existing content
+        Object.values(countdownIntervals).forEach(clearInterval);
+        countdownIntervals = {};
+
+        allBirthdays = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderFilteredBirthdays();
+    }, (error) => {
+        console.error("Error fetching birthdays: ", error);
+        wallContainer.innerHTML = '<p class="text-red-500 col-span-full text-center">Could not load birthdays.</p>';
+    });
+}
+
+function renderFilteredBirthdays() {
+    const now = new Date();
+    let filtered = allBirthdays;
+
+    // Apply filter
+    if (currentFilter === 'upcoming') {
+        filtered = allBirthdays.filter(b => getNextBirthday(b.date) > now);
+    } else if (currentFilter === 'today') {
+        filtered = allBirthdays.filter(b => {
+            const nextBday = getNextBirthday(b.date);
+            return nextBday.getDate() === now.getDate() &&
+                   nextBday.getMonth() === now.getMonth();
+        });
+    }
+    
+    // Sort by next occurrence
+    filtered.sort((a, b) => getNextBirthday(a.date) - getNextBirthday(b.date));
+
+    // Apply search
+    if (searchQuery) {
+        filtered = filtered.filter(b => b.name.toLowerCase().includes(searchQuery));
+    }
+
+    wallContainer.innerHTML = '';
+    if (filtered.length === 0) {
+        noResults.classList.remove('hidden');
+    } else {
+        noResults.classList.add('hidden');
+        filtered.forEach(createBirthdayCard);
+    }
+}
+
+function createBirthdayCard(birthday) {
+    const card = document.createElement('div');
+    card.className = `glass-card p-6 flex flex-col justify-between transition-all duration-300 ${birthday.isForFriend ? 'sparkle' : ''}`;
+    card.innerHTML = `
+        <div>
+            <h3 class="text-2xl font-bold text-pink-500 truncate">${birthday.name}</h3>
+            <p class="text-gray-500 text-sm mb-4 truncate">${birthday.note || 'A special day is coming!'}</p>
+        </div>
+        <div>
+            <div id="timer-${birthday.id}" class="text-center text-lg font-bold text-gray-700 mb-4">Loading...</div>
+            <a href="countdown.html?id=${birthday.id}" class="block w-full text-center bg-pink-400 text-white font-bold py-2 px-4 rounded-full hover:bg-pink-500 transition-colors">View Countdown</a>
+        </div>
+    `;
+    wallContainer.appendChild(card);
+    startCardCountdown(birthday.id, birthday.date);
+}
+
+function startCardCountdown(id, dateString) {
+    const timerElement = document.getElementById(`timer-${id}`);
+    if (!timerElement) return;
+
+    countdownIntervals[id] = setInterval(() => {
+        const nextBirthday = getNextBirthday(dateString);
+        const now = new Date().getTime();
+        const distance = nextBirthday - now;
+
+        if (distance < 0) {
+            const daysSince = Math.floor(Math.abs(distance) / (1000 * 60 * 60 * 24));
+            timerElement.innerHTML = `<span class="text-gray-500">${daysSince} days ago</span>`;
+            if (daysSince === 0) timerElement.innerHTML = `<span class="text-green-500 font-extrabold">It's Today! 🎉</span>`;
+        } else {
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            timerElement.innerHTML = `<span class="text-pink-600">${days}d ${hours}h left</span>`;
+        }
+    }, 1000);
+}
+
+function getNextBirthday(dateString) {
+    const today = new Date();
+    const birthDate = new Date(dateString + 'T00:00:00'); // Use T00:00:00 to avoid timezone issues
+    
+    let nextBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+
+    if (nextBirthday < today) {
+        nextBirthday.setFullYear(today.getFullYear() + 1);
+    }
+
+    return nextBirthday;
+}
