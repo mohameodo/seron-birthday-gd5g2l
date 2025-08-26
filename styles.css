@@ -1,0 +1,71 @@
+/* Custom global styles and animations */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.balloon {
+    position: absolute;
+    bottom: -150px;
+    width: 60px;
+    height: 75px;
+    background-color: rgba(255, 99, 132, 0.7);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: float 6s ease-in-out infinite, rise linear forwards;
+    opacity: 0.7;
+}
+
+@keyframes rise {
+    to {
+        transform: translateY(-120vh);
+    }
+}
+
+@keyframes confetti-burst {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--x-end), var(--y-end)) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #f00;
+    opacity: 0;
+    animation: confetti-burst 1.5s ease-out forwards;
+}
+
+@keyframes sparkle-anim {
+    0%, 100% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1); opacity: 1; }
+}
+
+.sparkle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23FFD700" d="M512 256c0 16.2-4.2 31.7-11.9 45.4l-1.8 3.3-3.6 6.3c-8.3 14.6-19.4 27.4-32.6 37.5L256 512 149.9 348.5c-13.2-10.1-24.3-22.9-32.6-37.5l-3.6-6.3-1.8-3.3C4.2 287.7 0 272.2 0 256s4.2-31.7 11.9-45.4l1.8-3.3 3.6-6.3c8.3-14.6 19.4-27.4 32.6-37.5L256 0l106.1 163.5c13.2 10.1 24.3 22.9 32.6 37.5l3.6 6.3 1.8 3.3c7.7 13.7 11.9 29.2 11.9 45.4z"/></svg>');
+    background-size: contain;
+    animation: sparkle-anim 0.8s ease-in-out forwards;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .balloon, .confetti, .sparkle {
+    animation: none !important;
+    display: none !important;
+  }
+}
