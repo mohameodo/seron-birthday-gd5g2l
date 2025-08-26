@@ -3,55 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Public Birthday Wall</title>
+    <title>Public Wall | Birthday WishDrop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-gray-50 font-sans">
-    <div id="toast-container" class="fixed top-5 right-5 z-50"></div>
-    
-    <header class="bg-white shadow-md sticky top-0 z-40 p-4">
-        <div class="container mx-auto max-w-6xl">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <a href="index.html" class="text-2xl font-bold text-gray-800">Birthday Wall <i class="fa fa-glass-cheers text-yellow-500"></i></a>
-                <div class="relative w-full sm:w-64">
-                    <input type="text" id="search-bar" placeholder="Search by name..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-pink-400">
-                    <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+<body class="bg-pink-50 font-nunito text-gray-800">
+
+    <div class="background-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+    </div>
+
+    <div class="container mx-auto p-4 md:p-8 z-10 relative">
+        <header class="text-center mb-8">
+            <a href="/" class="text-2xl md:text-3xl font-black text-pink-500 drop-shadow-sm mb-2 inline-block">Birthday WishDrop</a>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-700">Public Countdown Wall</h1>
+            <p class="text-gray-500 mt-2">See all the magical birthdays people are waiting for!</p>
+        </header>
+
+        <div class="sticky top-4 bg-white/70 backdrop-blur-lg p-4 rounded-2xl shadow-md mb-8 z-20">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="relative flex-grow">
+                    <i class="fa-solid fa-search absolute top-1/2 -translate-y-1/2 left-4 text-pink-300"></i>
+                    <input type="text" id="search-bar" placeholder="Search by name..." class="form-input w-full">
+                </div>
+                <div id="filter-tabs" class="flex items-center justify-center bg-pink-100/50 rounded-full p-1 space-x-1">
+                    <button class="filter-tab active" data-filter="upcoming">Upcoming</button>
+                    <button class="filter-tab" data-filter="today">Today</button>
+                    <button class="filter-tab" data-filter="all">All</button>
                 </div>
             </div>
-            <nav class="mt-4 flex justify-center space-x-2 sm:space-x-4 bg-gray-100 p-1 rounded-full">
-                <button data-filter="upcoming" class="filter-btn active-filter">Upcoming</button>
-                <button data-filter="today" class="filter-btn">Today</button>
-                <button data-filter="all" class="filter-btn">All</button>
-            </nav>
         </div>
-    </header>
 
-    <main class="container mx-auto max-w-6xl p-4 sm:p-6">
-        <div id="birthdays-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <main id="wall-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <!-- Skeleton Loader -->
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
+        </main>
+
+        <div id="no-results" class="hidden text-center py-16">
+            <i class="fa-solid fa-ghost text-6xl text-pink-300 mb-4"></i>
+            <p class="text-xl text-gray-500">No birthdays found. Why not <a href="/" class="text-pink-500 font-bold hover:underline">add one</a>?</p>
         </div>
-        <p id="no-results" class="text-center text-gray-500 text-xl mt-10 hidden">No birthdays found. Be the first to add one!</p>
-    </main>
+    </div>
 
-    <a href="https://seron.dev" target="_blank" class="fixed bottom-4 right-4 bg-white text-gray-700 text-xs font-semibold px-3 py-1.5 rounded-full shadow-md hover:bg-gray-100 transition-all duration-300 z-10">
-        Made by Seron
-    </a>
+    <div id="toast-container"></div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    
-    <script src="js/firebase-config.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/wall.js"></script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/wall.js"></script>
 </body>
 </html>
